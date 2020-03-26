@@ -1,0 +1,11 @@
+//export const LANDING = "/";
+export const SIGN_UP = "/signup";
+export const SIGN_IN = "/signin";
+export const HOME = "/";
+export const ACCOUNT = "/account";
+export const ADMIN = "/admin";
+export const PASSWORD_FORGET = "/pw-forget";
+export const REGISTRATION = "/registration";
+export const CONFIIRMATION_PAGE = "/confirmation";
+export const ADMIN_DASH = "/admindash";
+export const APPLICATION_DETAILS = "/applicationdetails";
