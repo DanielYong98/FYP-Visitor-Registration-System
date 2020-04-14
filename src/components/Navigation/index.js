@@ -40,7 +40,7 @@ function Navigation({ firebase }) {
   return (
     <div>
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="sticky">
           <Toolbar>
             <IconButton
               edge="start"
@@ -68,7 +68,7 @@ function Navigation({ firebase }) {
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary={"Home"} />
+              <ListItemText primary={"Home"} onClick={handleDrawerClose} />
             </ListItem>
             <ListItem
               button
@@ -79,23 +79,29 @@ function Navigation({ firebase }) {
               <ListItemIcon>
                 <CreateIcon />
               </ListItemIcon>
-              <ListItemText primary={"New Application"} />
+              <ListItemText
+                primary={"New Application"}
+                onClick={handleDrawerClose}
+              />
             </ListItem>
 
             <AuthUserContext.Consumer>
-              {authUser =>
+              {(authUser) =>
                 authUser ? <NavNonAutho authUser={authUser} /> : null
               }
             </AuthUserContext.Consumer>
 
             <AuthUserContext.Consumer>
-              {authUser =>
+              {(authUser) =>
                 authUser ? (
                   <ListItem button key={"k4"} onClick={firebase.doSignOut}>
                     <ListItemIcon>
                       <ExitToAppIcon />
                     </ListItemIcon>
-                    <ListItemText primary={"Sign out"} />
+                    <ListItemText
+                      primary={"Sign out"}
+                      onClick={handleDrawerClose}
+                    />
                   </ListItem>
                 ) : null
               }
@@ -115,16 +121,16 @@ function Navigation({ firebase }) {
     </div>
   );
 }
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }));
 
 // const NavigationAuth = ({ authUser }) => (
@@ -163,7 +169,7 @@ const useStyles = makeStyles(theme => ({
 
 const NavNonAutho = ({ authUser }) =>
   authUser.roles[ROLES.ADMIN] ? (
-    <ListItem button key={"k3"} component={Link} to={ROUTES.ADMIN}>
+    <ListItem button key={"k3"} component={Link} to={ROUTES.ADMIN_DASH}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>

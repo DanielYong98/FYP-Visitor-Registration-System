@@ -7,133 +7,150 @@ import * as ROLES from "../../constants/roles";
 import { firebase } from "../Firebase/firebase";
 import { withRouter } from "react-router-dom";
 import { Button } from "@material-ui/core";
-
-function useList() {
-  const [applications, setApplications] = useState([]);
-
-  const doc = firebase
-    .firestore()
-    .collection("books")
-    .where(
-      firebase.firestore.FieldPath.documentId(),
-      "==",
-      "wd86sPRIwNShweE0o2rE"
-    )
-    .get();
-  console.log("this is doc " + doc);
-
-  //   useEffect(() => {
-  //     firebase
-  //       .firestore()
-  //       .collection("applications")
-  //       .onSnapshot(snapshot => {
-  //         const newApplications = snapshot.docs.map(doc => ({
-  //           id: doc.id,
-  //           ...doc.data()
-  //         }));
-  //         setApplications(newApplications);
-  //       });
-  //   }, []);
-  return doc;
-}
+import Forms from "../../Form";
 
 function ApplicationDetails(props) {
-  const [applications, setApplications] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const db = firebase.firestore();
-      const data = await db
-        .collection("applications")
-        .doc("wd86sPRIwNShweE0o2rE")
-        .get();
-      //const applications = data.map(doc=>doc.data())
-      console.log(data);
-    };
-  });
-  //const applications = useList();
-
+  //Clicking either approve or reject
   function onClick(action) {
     console.log(action);
     alert("Application has been " + action);
+    if (action === "approved") {
+      setStatus("Approved");
+      db.collection("applications")
+        .doc(props.location.state.id)
+        .update({ status: "approved" });
+    } else if (action === "rejected") {
+      db.collection("applications")
+        .doc(props.location.state.id)
+        .update({ status: "Rejected" });
+    }
     props.history.goBack();
   }
 
   //Get document with ID
   const db = firebase.firestore();
-  var docRef = db.collection("applications").doc("wd86sPRIwNShweE0o2rE");
+  var docRef = db.collection("applications").doc(props.location.state.id);
 
-  let applicationObject = {
-    name: "",
-    gender: "",
-    IC: "",
-    contactNum: "",
-    creatorEmail: "",
-    approval: "",
-    dateofVisit: "",
-    email: "",
-    purposeofVIsit: "",
-    typeofVehicle: "",
-    vehicleNum: ""
-  };
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [IC, setIC] = useState("");
+  const [contactNum, setContactNum] = useState("");
+  const [creatorEmail, setCreatorEmail] = useState("");
+  const [status, setStatus] = useState("");
+  const [dateofVisit, setDateofVisit] = useState("");
+  const [email, setEmail] = useState("");
+  const [purposeofVisit, setPurposeofVisit] = useState("");
+  const [typeofVehicle, setTypeofVehicle] = useState("");
+  const [vehicleNum, setVehicleNum] = useState("");
+
   docRef
     .get()
-    .then(function(doc) {
+    .then(function (doc) {
       if (doc.exists) {
-        applicationObject = {
-          name: doc.data().name,
-          gender: doc.data().gender,
-          IC: doc.data().IC,
-          contactNum: doc.data().contactNum,
-          creatorEmail: doc.data().creatorEmail,
-          approval: doc.data().approval,
-          dateofVisit: doc.data().dateofVisit,
-          email: doc.data().email,
-          purposeofVIsit: doc.data().purposeofVIsit,
-          typeofVehicle: doc.data().typeofVehicle,
-          vehicleNum: doc.data().vehicleNum
-        };
-        console.log("name is" + applicationObject.name);
+        setName(doc.data().name);
+        setGender(doc.data().gender);
+        setIC(doc.data().IC);
+        setContactNum(doc.data().contactNum);
+        setCreatorEmail(doc.data().creatorEmail);
+        setStatus(doc.data().status);
+        setDateofVisit(doc.data().dateofVisit);
+        setEmail(doc.data().email);
+        setPurposeofVisit(doc.data().purposeofVisit);
+        setTypeofVehicle(doc.data().typeofVehicle);
+        setVehicleNum(doc.data().vehicleNum);
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log("Error getting document:", error);
     });
 
+  function handleSubmit() {
+    const templateId = "template_RpSfUE8D";
+    console.log("on click submit");
+
+    sendFeedback(templateId, {
+      email_to: email,
+      ID: props.location.state.id,
+      name: name,
+      gender: gender,
+      gender: gender,
+      IC: IC,
+      contactNum: contactNum,
+      dateofVisit: dateofVisit,
+      typeofVehicle: typeofVehicle,
+      vehicleNum: vehicleNum,
+      purposeofVisit: purposeofVisit,
+    });
+  }
+
+  function sendFeedback(templateId, variables) {
+    window.emailjs
+      .send("gmail", templateId, variables)
+      .then((res) => {
+        console.log("Email successfully sent!");
+      })
+      // Handle errors here however you like, or use a React error boundary
+      .catch((err) =>
+        console.error(
+          "Oh well, you failed. Here some thoughts on the error that occured:",
+          err
+        )
+      );
+  }
   return (
     <div>
       <h1>Application Details</h1>
 
-      <div>Visitor ID is {props.location.state.id}</div>
-      <p1>Name: {applicationObject.name}</p1>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={props.history.goBack}
-      >
-        BACK
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => onClick("approved")}
-      >
-        APPROVE
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => onClick("rejected")}
-      >
-        REJECT
-      </Button>
+      <div>
+        <div>
+          <div>Document ID is {props.location.state.id}</div>
+          <p>Name: {name}</p>
+          <p>Gender: {gender}</p>
+          <p>Email: {email}</p>
+          <p>IC: {IC}</p>
+          <p>Contact Number: {contactNum}</p>
+          <p>Date of Visit: {dateofVisit}</p>
+          <p>Vehicle Type: {typeofVehicle}</p>
+          <p>Vehicle Number: {vehicleNum}</p>
+
+          <p>Purpose of Visit: {purposeofVisit}</p>
+          <p>Status: {status}</p>
+          <p>Application sent by: {creatorEmail}</p>
+        </div>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={props.history.goBack}
+        >
+          BACK
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            onClick("approved");
+            handleSubmit();
+          }}
+        >
+          APPROVE
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onClick("rejected")}
+        >
+          REJECT
+        </Button>
+      </div>
     </div>
   );
 }
 
-const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
+const condition = (authUser) => authUser && !!authUser.roles[ROLES.ADMIN];
 export default compose(
   withAuthorization(condition),
   withFirebase,

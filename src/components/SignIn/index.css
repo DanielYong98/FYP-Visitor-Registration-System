@@ -1,3 +1,12 @@
 .SignInComponent {
+  text-align: left;
+}
+
+.Title {
+  text-align: center;
+}
+
+.TestComp {
+  margin-top: 100px;
   text-align: center;
 }

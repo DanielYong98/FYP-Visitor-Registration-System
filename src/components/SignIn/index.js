@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
+import TextField from "@material-ui/core/TextField";
 import { SignUpLink } from "../SignUp";
 import { PasswordForgetLink } from "../PasswordForget";
 import { withFirebase } from "../Firebase";
@@ -23,7 +24,7 @@ const SignInPage = () => (
 const INITIAL_STATE = {
   email: "",
   password: "",
-  error: null
+  error: null,
 };
 
 class SignInFormBase extends Component {
@@ -32,7 +33,7 @@ class SignInFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     const { email, password } = this.state;
 
     this.props.firebase
@@ -41,14 +42,14 @@ class SignInFormBase extends Component {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
 
     event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -59,25 +60,43 @@ class SignInFormBase extends Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <div>
-          <img src={UoN} alt="Uon pic" width="75" />
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+        <div className="TestComp">
+          <img src={UoN} alt="Uon pic" width="30%" align="middle" />
+
+          <h2 className="Title">Sign In</h2>
+
           <form onSubmit={this.onSubmit}>
-            <input
+            {/* <input
               name="email"
               value={email}
               onChange={this.onChange}
               type="text"
               placeholder="Email Address"
+            /> */}
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={this.onChange}
             />
-            <input
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
               name="password"
-              value={password}
+              autoComplete="password"
+              autoFocus
               onChange={this.onChange}
               type="password"
-              placeholder="Password"
             />
             <Button
               type="submit"
@@ -85,6 +104,8 @@ class SignInFormBase extends Component {
               variant="contained"
               color="primary"
               disabled={isInvalid}
+              size="large"
+              align="right"
             >
               Sign In
             </Button>

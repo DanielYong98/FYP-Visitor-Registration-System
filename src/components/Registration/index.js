@@ -3,10 +3,14 @@ import { withAuthorization } from "../Session";
 import { firebase } from "../Firebase/firebase";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
-import Home from "../Home";
 import * as ROUTES from "../../constants/routes";
+import { borders } from "@material-ui/system";
+import TextField from "@material-ui/core/TextField";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import "./index.css";
 
 function getCurrentDate() {
   const today = new Date();
@@ -19,16 +23,16 @@ function getCurrentDate() {
   return date;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "25ch"
-    }
+      width: "25ch",
+    },
   },
   child: {
-    width: "10ch"
-  }
+    width: "10ch",
+  },
 }));
 
 function Registration() {
@@ -41,11 +45,11 @@ function Registration() {
   const [IC, setIC] = useState("");
   const [contactNum, setContactNum] = useState("");
   const [email, setEmail] = useState("");
-  const [dateofVisit, setDateofVisit] = useState("");
+  const [dateofVisit, setDateofVisit] = useState(new Date());
   const [typeofVehicle, setTypeofVehicle] = useState("");
   const [vehicleNum, setVehicleNum] = useState("");
   const [purposeofVisit, setPurposeofVisit] = useState("");
-  const [approval, setApproval] = useState(false);
+  const [status, setStatus] = useState("Pending");
   const [creatorEmail, setCreatorEmail] = useState(user.email);
 
   const isInvalid =
@@ -72,133 +76,147 @@ function Registration() {
       typeofVehicle,
       vehicleNum,
       purposeofVisit,
-      approval,
+      status,
       creatorEmail
     );
 
-    firebase
-      .firestore()
-      .collection("applications")
-      .add({
-        name,
-        gender,
-        IC,
-        contactNum,
-        email,
-        dateofVisit,
-        typeofVehicle,
-        vehicleNum,
-        purposeofVisit,
-        approval,
-        creatorEmail
-      });
+    firebase.firestore().collection("applications").add({
+      name,
+      gender,
+      IC,
+      contactNum,
+      email,
+      dateofVisit,
+      typeofVehicle,
+      vehicleNum,
+      purposeofVisit,
+      status,
+      creatorEmail,
+    });
   }
 
   function handleGender(e) {
     setGender(e.target.value);
   }
 
+  //className={classes.general}
+  //className={classes.root}
   return (
-    <div className={classes.general}>
+    <div className="container">
       <h1>New Application</h1>
-      <form className={classes.root} onSubmit={onSubmit}>
-        <label>Name:</label>
-        <br />
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label className={classes.child}>Male</label>
-        <input
-          className={classes.child}
-          type="radio"
-          name="gender"
-          value="male"
-          onChange={handleGender}
-        ></input>
-        <label className={classes.child}>Female</label>
-        <input
-          className={classes.child}
-          type="radio"
-          name="gender"
-          value="female"
-          onChange={handleGender}
-        ></input>
+      <p>Fill in all details</p>
+      <form onSubmit={onSubmit}>
+        <TextField
+          className="lol"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Name"
+          name="name"
+          autoComplete="name"
+          autoFocus
+          onChange={(e) => setName(e.currentTarget.value)}
+          size="small"
+        />
 
-        <br />
-        <label>IC No:</label>
-        <br />
-        <input
-          type="text"
-          value={IC}
-          onChange={e => setIC(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label>Contact No:</label>
-        <br />
-        <input
-          type="number"
-          value={contactNum}
-          onChange={e => setContactNum(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label>Email:</label>
-        <br />
-        <input
-          type="text"
-          value={email}
-          onChange={e => setEmail(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label>Date of visit:</label>
-        <br />
+        <RadioGroup
+          aria-label="gender"
+          name="gender1"
+          value={gender}
+          onChange={handleGender}
+        >
+          <FormControlLabel value="male" control={<Radio />} label="Male" />
+          <FormControlLabel value="female" control={<Radio />} label="Female" />
+        </RadioGroup>
+
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="IC No"
+          name="ic number"
+          autoFocus
+          onChange={(e) => setIC(e.currentTarget.value)}
+          size="small"
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Contact No"
+          autoFocus
+          onChange={(e) => setContactNum(e.currentTarget.value)}
+          size="small"
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Email"
+          autoFocus
+          onChange={(e) => setEmail(e.currentTarget.value)}
+          size="small"
+        />
+
+        <label>Date of visit: </label>
+
         <input
           type="date"
           id="DoV"
           name="DoV"
           min={minDate}
           value={dateofVisit}
-          onChange={e => setDateofVisit(e.currentTarget.value)}
+          onChange={(e) => setDateofVisit(e.currentTarget.value)}
         ></input>
-        <br />
-        <label>Type of Vehicle:</label>
-        <br />
-
-        <input
-          type="text"
-          value={typeofVehicle}
-          onChange={e => setTypeofVehicle(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label>Vehicle Plate Number:</label>
-        <br />
-        <input
-          type="text"
-          value={vehicleNum}
-          onChange={e => setVehicleNum(e.currentTarget.value)}
-        ></input>
-        <br />
-        <label>Purpose of Visit:</label>
-        <br />
-        <input
-          type="text"
-          value={purposeofVisit}
-          onChange={e => setPurposeofVisit(e.currentTarget.value)}
-        ></input>
-        <br />
+        <br></br>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Type of Vehicle"
+          autoFocus
+          onChange={(e) => setTypeofVehicle(e.currentTarget.value)}
+          size="small"
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Vehicle Plate Number"
+          autoFocus
+          onChange={(e) => setVehicleNum(e.currentTarget.value)}
+          size="small"
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Purpose of Visit"
+          autoFocus
+          multiline
+          rows={4}
+          onChange={(e) => setPurposeofVisit(e.currentTarget.value)}
+          size="small"
+        />
 
         <Link
           to={{ pathname: ROUTES.CONFIIRMATION_PAGE, state: { email: email } }}
         >
           <Button
+            className="button"
             variant="contained"
             color="primary"
             onClick={onSubmit}
             //disabled={isInvalid}
           >
-            Submit applicationn
+            Submit application
           </Button>
         </Link>
       </form>
@@ -206,6 +224,6 @@ function Registration() {
   );
 }
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default withAuthorization(condition)(Registration);

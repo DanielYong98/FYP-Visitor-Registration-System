@@ -8,27 +8,43 @@ import { firebase } from "../Firebase/firebase";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
 import { Button } from "@material-ui/core";
+import "./adminDash.css";
+import { makeStyles } from "@material-ui/core/styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
-function useList() {
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+function useList(lol) {
   const [applications, setApplications] = useState([]);
 
   useEffect(() => {
     firebase
       .firestore()
       .collection("applications")
-      .onSnapshot(snapshot => {
-        const newApplciations = snapshot.docs.map(doc => ({
+      .where("status", "==", lol)
+      .onSnapshot((snapshot) => {
+        const newApplications = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
-        setApplications(newApplciations);
+        setApplications(newApplications);
       });
-  }, []);
+  }, [lol]);
   return applications;
 }
 
 function AdminDash() {
-  const applications = useList();
+  const [view, setView] = useState("Approved");
+  const applications = useList(view);
 
   function onClick(x) {
     console.log("VIEWED " + x);
@@ -37,28 +53,42 @@ function AdminDash() {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      <p>The Admin Page is accessible by every signed in admin user.</p>
-
-      <table className="applicationTable">
+      <p>All applications listed here</p>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={view}
+        onChange={(e) => {
+          setView(e.target.value);
+          console.log(view);
+        }}
+      >
+        <MenuItem value={"Pending"}>Pending</MenuItem>
+        <MenuItem value={"Approved"}>Approved</MenuItem>
+        <MenuItem value={"Rejected"}>Rejected</MenuItem>
+      </Select>
+      <table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Visitor Name</th>
             <th>Email</th>
+            <th>Vehicle Number</th>
             <th>Date of Visit</th>
             <th>Options</th>
           </tr>
         </thead>
         <tbody>
-          {applications.map(application => (
+          {applications.map((application) => (
             <tr key={application.id}>
               <td>{application.name}</td>
               <td>{application.email}</td>
+              <td>{application.vehicleNum}</td>
               <td>{application.dateofVisit}</td>
               <td>
                 <Link
                   to={{
                     pathname: ROUTES.APPLICATION_DETAILS,
-                    state: { id: application.id }
+                    state: { id: application.id },
                   }}
                 >
                   <Button
@@ -78,5 +108,5 @@ function AdminDash() {
   );
 }
 
-const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
+const condition = (authUser) => authUser && !!authUser.roles[ROLES.ADMIN];
 export default compose(withAuthorization(condition), withFirebase)(AdminDash);

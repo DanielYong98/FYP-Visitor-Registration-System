@@ -1,0 +1,16 @@
+.container {
+  margin: 50px 20%;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.button {
+  align-self: right;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 50px 5%;
+  }
+}
