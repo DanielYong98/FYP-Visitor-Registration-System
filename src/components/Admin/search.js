@@ -7,21 +7,7 @@ import * as ROLES from "../../constants/roles";
 import { firebase } from "../Firebase/firebase";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
-import { Button } from "@material-ui/core";
-import "./adminDash.css";
-import { makeStyles } from "@material-ui/core/styles";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { Button, TextField } from "@material-ui/core";
 
 function useList(props) {
   const [applications, setApplications] = useState([]);
@@ -30,7 +16,7 @@ function useList(props) {
     firebase
       .firestore()
       .collection("applications")
-      .where("status", "==", props)
+      .where("vehicleNum", "==", props)
       .onSnapshot((snapshot) => {
         const newApplications = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -42,34 +28,26 @@ function useList(props) {
   return applications;
 }
 
-function AdminDash() {
-  const [view, setView] = useState("Pending");
-  const applications = useList(view);
-
-  function onClick(x) {
-    console.log("VIEWED " + x);
-  }
+function Search() {
+  const [criteria, setCriteria] = useState("none");
+  const applications = useList(criteria);
 
   return (
     <div className="dashboard">
       <div className="dash">
-        <p>Dashboard</p>
+        <p>Search Vehicle Number</p>
       </div>
-      <p className="views">{view} applications</p>
-      <Select
-        className="view"
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={view}
-        onChange={(e) => {
-          setView(e.target.value);
-          console.log(view);
-        }}
-      >
-        <MenuItem value={"Pending"}>Pending</MenuItem>
-        <MenuItem value={"Approved"}>Approved</MenuItem>
-        <MenuItem value={"Rejected"}>Rejected</MenuItem>
-      </Select>
+      <div style={{ margin: "5px 20px" }}>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          label="Vehicle Number"
+          onChange={(e) => setCriteria(e.currentTarget.value)}
+          size="small"
+        />
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -93,13 +71,8 @@ function AdminDash() {
                     pathname: ROUTES.APPLICATION_DETAILS,
                     state: { id: application.id },
                   }}
-                  style={{ textDecoration: "none" }}
                 >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => onClick(application.id)}
-                  >
+                  <Button variant="contained" color="primary">
                     VIEW
                   </Button>
                 </Link>
@@ -113,4 +86,4 @@ function AdminDash() {
 }
 
 const condition = (authUser) => authUser && !!authUser.roles[ROLES.ADMIN];
-export default compose(withAuthorization(condition), withFirebase)(AdminDash);
+export default compose(withAuthorization(condition), withFirebase)(Search);

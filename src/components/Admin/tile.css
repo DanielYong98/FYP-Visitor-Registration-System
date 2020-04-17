@@ -1,0 +1,48 @@
+.tile1 {
+  margin-top: 10%;
+  margin-left: 30%;
+  align-self: center;
+  border: 1px black solid;
+  width: 300px;
+  background-color: #3f51b5;
+  border-radius: 5%;
+  float: left;
+  text-align: center;
+}
+
+.tile1 p {
+  text-align: center;
+  color: lightgray;
+  font-size: 30px;
+  padding: 0 10px 0 10px;
+}
+
+.tile2 {
+  margin-top: 10%;
+  margin-right: 30%;
+  align-self: center;
+  border: 1px black solid;
+  width: 300px;
+  background-color: #3f51b5;
+  border-radius: 5%;
+  float: right;
+  text-align: center;
+}
+
+.tile2 p {
+  text-align: center;
+  color: lightgray;
+  font-size: 30px;
+  padding: 0 10px 0 10px;
+}
+.icon {
+  align-self: center;
+  justify-content: center;
+  margin: auto;
+  align-items: center;
+  align-content: center;
+}
+
+.search {
+  text-align: center;
+}

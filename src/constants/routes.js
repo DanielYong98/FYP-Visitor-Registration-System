@@ -9,3 +9,5 @@ export const REGISTRATION = "/registration";
 export const CONFIIRMATION_PAGE = "/confirmation";
 export const ADMIN_DASH = "/admindash";
 export const APPLICATION_DETAILS = "/applicationdetails";
+export const SEARCH = "/search";
+export const TILE = "/tile";

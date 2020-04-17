@@ -8,6 +8,7 @@ import { firebase } from "../Firebase/firebase";
 import { withRouter } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import Forms from "../../Form";
+import "./index.css";
 
 function ApplicationDetails(props) {
   //Clicking either approve or reject
@@ -18,7 +19,7 @@ function ApplicationDetails(props) {
       setStatus("Approved");
       db.collection("applications")
         .doc(props.location.state.id)
-        .update({ status: "approved" });
+        .update({ status: "Approved" });
     } else if (action === "rejected") {
       db.collection("applications")
         .doc(props.location.state.id)
@@ -101,50 +102,73 @@ function ApplicationDetails(props) {
       );
   }
   return (
-    <div>
-      <h1>Application Details</h1>
+    <div className="contain">
+      <div className="details">
+        <p>Application Details</p>
+      </div>
 
       <div>
-        <div>
-          <div>Document ID is {props.location.state.id}</div>
-          <p>Name: {name}</p>
-          <p>Gender: {gender}</p>
-          <p>Email: {email}</p>
-          <p>IC: {IC}</p>
-          <p>Contact Number: {contactNum}</p>
-          <p>Date of Visit: {dateofVisit}</p>
-          <p>Vehicle Type: {typeofVehicle}</p>
-          <p>Vehicle Number: {vehicleNum}</p>
-
-          <p>Purpose of Visit: {purposeofVisit}</p>
-          <p>Status: {status}</p>
-          <p>Application sent by: {creatorEmail}</p>
+        <div className="grid">
+          <p>Name:</p>
+          <p>{name}</p>
+          <p>Gender: </p>
+          <p>{gender}</p>
+          <p>Email: </p>
+          <p>{email}</p>
+          <p>IC: </p>
+          <p>{IC}</p>
+          <p>Contact Number: </p>
+          <p>{contactNum}</p>
+          <p>Date of Visit: </p>
+          <p>{dateofVisit}</p>
+          <p>Vehicle Type: </p>
+          <p>{typeofVehicle}</p>
+          <p>Vehicle Number: </p>
+          <p>{vehicleNum}</p>
+          <p>Purpose of Visit: </p>
+          <p>{purposeofVisit}</p>
+          <p>Status: </p>
+          <p>{status}</p>
+          <p>Application sent by: </p>
+          <p>{creatorEmail}</p>
+          <p>ID:</p>
+          <p>{props.location.state.id}</p>
         </div>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={props.history.goBack}
-        >
-          BACK
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            onClick("approved");
-            handleSubmit();
-          }}
-        >
-          APPROVE
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => onClick("rejected")}
-        >
-          REJECT
-        </Button>
+        <div className="backbtn">
+          <Button
+            className="backbtn"
+            variant="contained"
+            color="primary"
+            onClick={props.history.goBack}
+          >
+            BACK
+          </Button>
+        </div>
+        <div className="approvebtn">
+          <Button
+            className="approvebtn"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              onClick("approved");
+              handleSubmit();
+            }}
+          >
+            APPROVE
+          </Button>
+        </div>
+
+        <div className="rejectbtn">
+          <Button
+            className="rejectbtn"
+            variant="contained"
+            color="primary"
+            onClick={() => onClick("rejected")}
+          >
+            REJECT
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -8,16 +8,18 @@ import PasswordForgetPage from "../PasswordForget";
 import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
-import TestDB from "../TestFolder/testDB";
+
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Session";
 import { withAuthentication } from "../Session";
 import RegistrationPage from "../Registration";
-import TimesList from "../TestFolder/testList";
+
 import ConfirmationPage from "../Registration/confirmation";
 import AdminDash from "../Admin/adminDash";
 import ApplicationDetails from "../ApplicationDetails";
+import Search from "../Admin/search";
+import TilePage from "../Admin/tile";
 
 function App() {
   return (
@@ -36,19 +38,20 @@ function App() {
         <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route exact path={ROUTES.ADMIN} component={AdminPage} />
         <Route exact path={ROUTES.REGISTRATION} component={RegistrationPage} />
-        <Route exact path="/testdb" component={TestDB} />
-        <Route exact path="/list" component={TimesList} />
+
         <Route
           exact
           path={ROUTES.CONFIIRMATION_PAGE}
           component={ConfirmationPage}
         />
         <Route exact path={ROUTES.ADMIN_DASH} component={AdminDash} />
+        <Route exact path={ROUTES.TILE} component={TilePage} />
         <Route
           exact
           path={ROUTES.APPLICATION_DETAILS}
           component={ApplicationDetails}
         />
+        <Route exact path={ROUTES.SEARCH} component={Search} />
       </div>
     </Router>
   );

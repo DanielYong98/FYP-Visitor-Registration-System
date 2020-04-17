@@ -169,7 +169,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavNonAutho = ({ authUser }) =>
   authUser.roles[ROLES.ADMIN] ? (
-    <ListItem button key={"k3"} component={Link} to={ROUTES.ADMIN_DASH}>
+    <ListItem button key={"k3"} component={Link} to={ROUTES.TILE}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
