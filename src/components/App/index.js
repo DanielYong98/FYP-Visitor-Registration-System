@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navigation from "../Navigation";
-import LandingPage from "../Landing";
+
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
 import PasswordForgetPage from "../PasswordForget";
@@ -20,6 +20,8 @@ import AdminDash from "../Admin/adminDash";
 import ApplicationDetails from "../ApplicationDetails";
 import Search from "../Admin/search";
 import TilePage from "../Admin/tile";
+import QR from "../QR/QR";
+import NotFound from "../QR/NotFound";
 
 function App() {
   return (
@@ -52,6 +54,9 @@ function App() {
           component={ApplicationDetails}
         />
         <Route exact path={ROUTES.SEARCH} component={Search} />
+        <Route exact path={ROUTES.SEARCH} component={Search} />
+        <Route exact path="/QR/:id" render={(props) => <QR {...props} />} />
+        <Route exact path="/404" component={NotFound} />
       </div>
     </Router>
   );

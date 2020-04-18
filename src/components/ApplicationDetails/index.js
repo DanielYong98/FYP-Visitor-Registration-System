@@ -68,10 +68,13 @@ function ApplicationDetails(props) {
       console.log("Error getting document:", error);
     });
 
+  //visitor-registration-3f5c6.web.app/QR/
+  //Handles approve button
   function handleSubmit() {
     const templateId = "template_RpSfUE8D";
     console.log("on click submit");
 
+    console.log("http://localhost:3000/" + props.location.state.id);
     sendFeedback(templateId, {
       email_to: email,
       ID: props.location.state.id,
@@ -84,16 +87,18 @@ function ApplicationDetails(props) {
       typeofVehicle: typeofVehicle,
       vehicleNum: vehicleNum,
       purposeofVisit: purposeofVisit,
+      Url: "http://localhost:3000/QR/" + props.location.state.id,
     });
   }
 
+  //API for email js, sends all information to email send
   function sendFeedback(templateId, variables) {
     window.emailjs
       .send("gmail", templateId, variables)
       .then((res) => {
         console.log("Email successfully sent!");
       })
-      // Handle errors here however you like, or use a React error boundary
+      // Handle errors here
       .catch((err) =>
         console.error(
           "Oh well, you failed. Here some thoughts on the error that occured:",
@@ -145,29 +150,71 @@ function ApplicationDetails(props) {
             BACK
           </Button>
         </div>
-        <div className="approvebtn">
-          <Button
-            className="approvebtn"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              onClick("approved");
-              handleSubmit();
-            }}
-          >
-            APPROVE
-          </Button>
-        </div>
 
-        <div className="rejectbtn">
-          <Button
-            className="rejectbtn"
-            variant="contained"
-            color="primary"
-            onClick={() => onClick("rejected")}
-          >
-            REJECT
-          </Button>
+        <div>
+          {(() => {
+            switch (status) {
+              case "Pending":
+                return (
+                  <div>
+                    <div className="approvebtn">
+                      <Button
+                        className="approvebtn"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                          onClick("approved");
+                          handleSubmit();
+                        }}
+                      >
+                        APPROVE
+                      </Button>
+                    </div>
+                    <div className="rejectbtn">
+                      <Button
+                        className="rejectbtn"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => onClick("rejected")}
+                      >
+                        REJECT
+                      </Button>
+                    </div>
+                  </div>
+                );
+              case "Approved":
+                return (
+                  <div className="rejectbtn">
+                    <Button
+                      className="rejectbtn"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => onClick("rejected")}
+                    >
+                      REJECT
+                    </Button>
+                  </div>
+                );
+              case "Rejected":
+                return (
+                  <div className="approvebtn">
+                    <Button
+                      className="approvebtn"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        onClick("approved");
+                        handleSubmit();
+                      }}
+                    >
+                      APPROVE
+                    </Button>
+                  </div>
+                );
+              default:
+                return null;
+            }
+          })()}
         </div>
       </div>
     </div>

@@ -41,6 +41,7 @@
 
 .rejectbtn {
   float: right;
+  margin-right: 30px;
 }
 
 .grid > p {
