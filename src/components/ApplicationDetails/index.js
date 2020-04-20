@@ -68,13 +68,16 @@ function ApplicationDetails(props) {
       console.log("Error getting document:", error);
     });
 
-  //visitor-registration-3f5c6.web.app/QR/
+  //https://visitor-registration-3f5c6.web.app/QR/
+  //http://localhost:3000/QR/
   //Handles approve button
   function handleSubmit() {
     const templateId = "template_RpSfUE8D";
     console.log("on click submit");
 
-    console.log("http://localhost:3000/" + props.location.state.id);
+    console.log(
+      "https://visitor-registration-3f5c6.web.app/QR/" + props.location.state.id
+    );
     sendFeedback(templateId, {
       email_to: email,
       ID: props.location.state.id,
@@ -87,7 +90,9 @@ function ApplicationDetails(props) {
       typeofVehicle: typeofVehicle,
       vehicleNum: vehicleNum,
       purposeofVisit: purposeofVisit,
-      Url: "http://localhost:3000/QR/" + props.location.state.id,
+      Url:
+        "https://visitor-registration-3f5c6.web.app/QR/" +
+        props.location.state.id,
     });
   }
 

@@ -26,6 +26,7 @@ function QR({
   const [isFake, setIsFake] = useState(true);
   const [name, setName] = useState("");
   const [dateOfVisit, setDateOfVisit] = useState("");
+  const [vehicleNum, setVehicleNum] = useState("");
 
   firebase
     .firestore()
@@ -37,6 +38,7 @@ function QR({
         console.log("Document data exist");
         setName(doc.data().name);
         setDateOfVisit(doc.data().dateofVisit);
+        setVehicleNum(doc.data().vehicleNum);
         setIsFake(false);
         setIsLoading(false);
       } else {
@@ -72,7 +74,9 @@ function QR({
             "\nName: " +
             name +
             "\nDate of Visit: " +
-            dateOfVisit
+            dateOfVisit +
+            "\nVehicle Number: " +
+            vehicleNum
           }
           size={290}
           level={"H"}
