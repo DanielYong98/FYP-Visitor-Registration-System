@@ -81,6 +81,14 @@ function QR({
           size={290}
           level={"H"}
           includeMargin={true}
+          imageSettings={{
+            src: "../../UoN.jpg",
+            x: null,
+            y: null,
+            height: 50,
+            width: 50,
+            excavate: true,
+          }}
         />
       </div>
       <div className="qrcode">

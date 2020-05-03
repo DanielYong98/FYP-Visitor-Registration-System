@@ -1,6 +1,6 @@
 .tile1 {
   margin-top: 10%;
-  margin-left: 30%;
+  margin-left: 20%;
   align-self: center;
   border: 1px black solid;
   width: 300px;
@@ -19,7 +19,7 @@
 
 .tile2 {
   margin-top: 10%;
-  margin-right: 30%;
+  margin-right: 20%;
   align-self: center;
   border: 1px black solid;
   width: 300px;
@@ -45,4 +45,14 @@
 
 .search {
   text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+  .tile1,
+  .tile2 {
+    margin: 10% auto 10% auto;
+    text-align: center;
+    align-self: center;
+    float: none;
+  }
 }

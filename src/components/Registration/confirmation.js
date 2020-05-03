@@ -11,7 +11,7 @@ function ConfirmationPage(props) {
         <p>New Application</p>
       </div>
       <div className="submitted">
-        <h2>APPLICATION SUBMITTED</h2>
+        <h2>Application submitted</h2>
         <p>
           A confirmation email will be sent to {props.location.state.email} once
           approved

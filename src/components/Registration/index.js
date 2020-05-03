@@ -92,7 +92,7 @@ function Registration() {
         <p>New Application</p>
       </div>
       <div className="form">
-        <p>Fill in all details</p>
+        <p>Fill in visitor's details</p>
         <form onSubmit={onSubmit}>
           <TextField
             className="lol"
@@ -167,7 +167,7 @@ function Registration() {
             margin="normal"
             required
             fullWidth
-            label="Type of Vehicle"
+            label="Type of Vehicle E.g. Car"
             onChange={(e) => setTypeofVehicle(e.currentTarget.value)}
             size="small"
           />
@@ -203,7 +203,7 @@ function Registration() {
               variant="contained"
               color="primary"
               onClick={onSubmit}
-              //disabled={isInvalid}
+              disabled={isInvalid}
             >
               Submit application
             </Button>

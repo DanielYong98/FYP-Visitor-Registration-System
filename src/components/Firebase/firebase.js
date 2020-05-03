@@ -11,7 +11,7 @@ const config = {
   storageBucket: "visitor-registration-3f5c6.appspot.com",
   messagingSenderId: "176373991576",
   appId: "1:176373991576:web:f63658ff846d553303e8ed",
-  measurementId: "G-D3B8F08XM3"
+  measurementId: "G-D3B8F08XM3",
 };
 
 firebase.initializeApp(config);
@@ -24,25 +24,26 @@ class Firebase {
   }
 
   // *** Auth API ***
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
-
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    this.auth.createUserWithEmailAndPassword(email, password);
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
+
+  doPasswordUpdate = (password) =>
+    this.auth.currentUser.updatePassword(password);
 
   // *** Merge Auth and DB User API *** //
   onAuthUserListener = (next, fallback) =>
-    this.auth.onAuthStateChanged(authUser => {
+    this.auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         this.user(authUser.uid)
           .once("value")
-          .then(snapshot => {
+          .then((snapshot) => {
             const dbUser = snapshot.val();
             // default empty roles
             if (!dbUser.roles) {
@@ -52,7 +53,7 @@ class Firebase {
             authUser = {
               uid: authUser.uid,
               email: authUser.email,
-              ...dbUser
+              ...dbUser,
             };
             next(authUser);
           });
@@ -62,7 +63,7 @@ class Firebase {
     });
 
   // *** User API ***
-  user = uid => this.db.ref(`users/${uid}`);
+  user = (uid) => this.db.ref(`users/${uid}`);
   users = () => this.db.ref("users");
 }
 

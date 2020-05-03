@@ -54,7 +54,6 @@ function App() {
           component={ApplicationDetails}
         />
         <Route exact path={ROUTES.SEARCH} component={Search} />
-        <Route exact path={ROUTES.SEARCH} component={Search} />
         <Route exact path="/QR/:id" render={(props) => <QR {...props} />} />
         <Route exact path="/404" component={NotFound} />
       </div>
